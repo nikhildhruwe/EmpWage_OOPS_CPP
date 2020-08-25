@@ -3,19 +3,34 @@
 using namespace std;
 
 class Employee{
+    private:
+        int EMP_RATE_PER_HOUR = 20;
+        int empHrs;
     public :
-        void checkAttendance(){
-            srand(time(0));
-            int empCheck = (rand() % 2);
-            if (empCheck == 1)
-                cout << "Employee is Present" << endl;
-            else
-                cout << "Employee is Absent" << endl;
-            }
+        int checkAttendance();
+        int getDailyWage(int);
 };
+
+int Employee :: checkAttendance(){
+    srand(time(0));
+    return (rand() % 2);  
+}
+
+int Employee :: getDailyWage(int attendance){
+    if (attendance == 1)
+        empHrs = 8;
+    else
+        empHrs = 0;
+   return empHrs * EMP_RATE_PER_HOUR;
+}
 
 int main(){
     cout << "\n\tWelcome To Employee Wage Computation" << endl;
+    int attendance, empWage;
     Employee empObj;
-    empObj.checkAttendance();
+    attendance = empObj.checkAttendance();
+    empWage = empObj.getDailyWage(attendance);
+    cout << "Employee Wage Per Day = " << empWage << endl;
+
+
 }
