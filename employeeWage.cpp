@@ -49,19 +49,25 @@ int Employee :: getEmployeeHours(int empType){
         return empHrs;
 }
 
-int main(){
-    cout << "\n\tWelcome To Employee Wage Computation" << endl;
-    int empType, empHrs, day = 0, totalEmpWage= 0, totalEmpHrs = 0;
-    srand(time(0));
+int getMonthlyEmployeeWage(Employee empObj){
+    int empType, empHrs, day = 0, totalEmpHrs = 0;
 
-    Employee empObj;
     while (day < empObj.getTotalWorkingDays() && totalEmpHrs < empObj.getMaxMonthlyHours()){
         day++;
         empType = empObj.getEmployeeType();
         empHrs = empObj.getEmployeeHours(empType);
         totalEmpHrs += empHrs;
     }
+    
+    return totalEmpHrs * empObj.getEmpRatePerHour();
+}
 
-    totalEmpWage = totalEmpHrs * empObj.getEmpRatePerHour();
+
+int main(){
+    cout << "\n\tWelcome To Employee Wage Computation" << endl;
+    srand(time(0));
+
+    Employee empObj;
+    int totalEmpWage = getMonthlyEmployeeWage(empObj);
     cout << "Employee Wage for a month = " << totalEmpWage << endl;
 }
