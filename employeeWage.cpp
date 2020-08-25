@@ -16,15 +16,20 @@ int Employee :: getEmployeeType(){
 }
 
 int Employee :: getDailyWage(int empType){
-    int FULL_TIME = 0, PART_TIME = 1, empHrs;;
+    const int FULL_TIME = 0, PART_TIME = 1;
+    int empHrs;
 
-    if ( empType == FULL_TIME)
-        empHrs = 8;
-    else if ( empType == PART_TIME)
-        empHrs = 4;
-    else
-        empHrs = 0;
-    return empHrs * EMP_RATE_PER_HOUR;
+   switch(empType){
+        case FULL_TIME:
+            empHrs = 8;
+            break;
+        case PART_TIME:
+            empHrs = 4;
+            break;
+        default:
+            empHrs = 0;
+   }
+        return empHrs * EMP_RATE_PER_HOUR;
 }
 
 int main(){
