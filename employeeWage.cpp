@@ -3,36 +3,54 @@
 #include <unistd.h>
 using namespace std;
 
-class Employee{
+class Company{
     private:
-        int EMP_RATE_PER_HOUR = 20;
-        int NUM_OF_WORKING_DAYS = 20;
-        int MAX_MONTHLY_HRS = 100;
+        int EMP_RATE_PER_HOUR;
+        int NUM_OF_WORKING_DAYS;
+        int MAX_MONTHLY_HRS;
+        string companyName;
     public :
+            Company();
         int getEmployeeType();
         int getEmployeeHours(int);
         int getTotalWorkingDays();
         int getMaxMonthlyHours();
         int getEmpRatePerHour();
+        string getCompanyName();
 };
 
-int Employee :: getEmpRatePerHour(){
+Company :: Company(){
+    cout << "Enter Company Name: ";
+    cin >> companyName;
+    cout << "Enter total working days per month : ";
+    cin >> NUM_OF_WORKING_DAYS;
+    cout << "Enter maximum working hours : ";
+    cin >> MAX_MONTHLY_HRS;
+    cout << "Enter employee rate per hour : ";
+    cin >> EMP_RATE_PER_HOUR;
+}
+
+string Company :: getCompanyName(){
+    return companyName;
+}
+
+int Company :: getEmpRatePerHour(){
     return EMP_RATE_PER_HOUR;
 }
 
-int Employee :: getMaxMonthlyHours(){
+int Company :: getMaxMonthlyHours(){
     return MAX_MONTHLY_HRS;
 }
 
-int Employee :: getTotalWorkingDays(){
+int Company :: getTotalWorkingDays(){
     return NUM_OF_WORKING_DAYS;
 }
 
-int Employee :: getEmployeeType(){
+int Company :: getEmployeeType(){
     return (rand() % 3);  
 }
 
-int Employee :: getEmployeeHours(int empType){
+int Company :: getEmployeeHours(int empType){
     const int FULL_TIME = 0, PART_TIME = 1;
     int empHrs;
 
@@ -49,25 +67,32 @@ int Employee :: getEmployeeHours(int empType){
         return empHrs;
 }
 
-int getMonthlyEmployeeWage(Employee empObj){
+int getMonthlyEmployeeWage(Company obj){
     int empType, empHrs, day = 0, totalEmpHrs = 0;
 
-    while (day < empObj.getTotalWorkingDays() && totalEmpHrs < empObj.getMaxMonthlyHours()){
+    while (day < obj.getTotalWorkingDays() && totalEmpHrs < obj.getMaxMonthlyHours()){
         day++;
-        empType = empObj.getEmployeeType();
-        empHrs = empObj.getEmployeeHours(empType);
+        empType = obj.getEmployeeType();
+        empHrs = obj.getEmployeeHours(empType);
         totalEmpHrs += empHrs;
     }
     
-    return totalEmpHrs * empObj.getEmpRatePerHour();
+    return totalEmpHrs * obj.getEmpRatePerHour();
 }
 
 
 int main(){
     cout << "\n\tWelcome To Employee Wage Computation" << endl;
+    int totalEmpWage;
     srand(time(0));
 
-    Employee empObj;
-    int totalEmpWage = getMonthlyEmployeeWage(empObj);
+    Company obj1;
+    totalEmpWage = getMonthlyEmployeeWage(obj1);
+    cout << "\nCompany : " << obj1.getCompanyName() << endl;
+    cout << "Employee Wage for a month = " << totalEmpWage << endl;
+    cout << endl;
+    Company obj2;
+    totalEmpWage = getMonthlyEmployeeWage(obj2);
+    cout << "\nCompany : " << obj2.getCompanyName() << endl;
     cout << "Employee Wage for a month = " << totalEmpWage << endl;
 }
