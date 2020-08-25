@@ -7,11 +7,22 @@ class Employee{
     private:
         int EMP_RATE_PER_HOUR = 20;
         int NUM_OF_WORKING_DAYS = 20;
+        int MAX_MONTHLY_HRS = 100;
     public :
         int getEmployeeType();
-        int getDailyWage(int);
+        int getEmployeeHours(int);
         int getTotalWorkingDays();
+        int getMaxMonthlyHours();
+        int getEmpRatePerHour();
 };
+
+int Employee :: getEmpRatePerHour(){
+    return EMP_RATE_PER_HOUR;
+}
+
+int Employee :: getMaxMonthlyHours(){
+    return MAX_MONTHLY_HRS;
+}
 
 int Employee :: getTotalWorkingDays(){
     return NUM_OF_WORKING_DAYS;
@@ -21,7 +32,7 @@ int Employee :: getEmployeeType(){
     return (rand() % 3);  
 }
 
-int Employee :: getDailyWage(int empType){
+int Employee :: getEmployeeHours(int empType){
     const int FULL_TIME = 0, PART_TIME = 1;
     int empHrs;
 
@@ -35,21 +46,22 @@ int Employee :: getDailyWage(int empType){
         default:
             empHrs = 0;
    }
-        return empHrs * EMP_RATE_PER_HOUR;
+        return empHrs;
 }
 
 int main(){
     cout << "\n\tWelcome To Employee Wage Computation" << endl;
-    int empType, empWage, day = 0, totalEmpWage= 0;
+    int empType, empHrs, day = 0, totalEmpWage= 0, totalEmpHrs = 0;
     srand(time(0));
 
     Employee empObj;
-    while (day < empObj.getTotalWorkingDays()){
+    while (day < empObj.getTotalWorkingDays() && totalEmpHrs < empObj.getMaxMonthlyHours()){
         day++;
         empType = empObj.getEmployeeType();
-        empWage = empObj.getDailyWage(empType);
-        totalEmpWage += empWage;
+        empHrs = empObj.getEmployeeHours(empType);
+        totalEmpHrs += empHrs;
     }
-    
+
+    totalEmpWage = totalEmpHrs * empObj.getEmpRatePerHour();
     cout << "Employee Wage for a month = " << totalEmpWage << endl;
 }
