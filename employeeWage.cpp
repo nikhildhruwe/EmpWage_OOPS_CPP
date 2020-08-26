@@ -9,6 +9,7 @@ class Company{
         int NUM_OF_WORKING_DAYS;
         int MAX_MONTHLY_HRS;
         string companyName;
+        int totalMonthlyWage;
     public :
             Company();
         int getEmployeeType();
@@ -17,6 +18,8 @@ class Company{
         int getMaxMonthlyHours();
         int getEmpRatePerHour();
         string getCompanyName();
+        void setTotalMonthlyWage(int);
+        int getTotalMonthlyWage();
 };
 
 Company :: Company(){
@@ -28,6 +31,16 @@ Company :: Company(){
     cin >> MAX_MONTHLY_HRS;
     cout << "Enter employee rate per hour : ";
     cin >> EMP_RATE_PER_HOUR;
+}
+
+void Company :: setTotalMonthlyWage(int totalMonthlyWage){
+    this->totalMonthlyWage = totalMonthlyWage; 
+    // cout << this->totalMonthlyWage << endl;  
+}
+
+int Company :: getTotalMonthlyWage(){
+    // cout << totalMonthlyWage << endl;  
+    return this->totalMonthlyWage;
 }
 
 string Company :: getCompanyName(){
@@ -67,19 +80,18 @@ int Company :: getEmployeeHours(int empType){
         return empHrs;
 }
 
-int getMonthlyEmployeeWage(Company obj){
+void empWageBuilder(Company *obj){
     int empType, empHrs, day = 0, totalEmpHrs = 0;
 
-    while (day < obj.getTotalWorkingDays() && totalEmpHrs < obj.getMaxMonthlyHours()){
+    while (day < obj->getTotalWorkingDays() && totalEmpHrs < obj->getMaxMonthlyHours()){
         day++;
-        empType = obj.getEmployeeType();
-        empHrs = obj.getEmployeeHours(empType);
+        empType = obj->getEmployeeType();
+        empHrs = obj->getEmployeeHours(empType);
         totalEmpHrs += empHrs;
     }
-    
-    return totalEmpHrs * obj.getEmpRatePerHour();
+   int totalWage = totalEmpHrs * obj->getEmpRatePerHour();
+   obj->setTotalMonthlyWage(totalWage);
 }
-
 
 int main(){
     cout << "\n\tWelcome To Employee Wage Computation" << endl;
@@ -87,12 +99,13 @@ int main(){
     srand(time(0));
 
     Company obj1;
-    totalEmpWage = getMonthlyEmployeeWage(obj1);
-    cout << "\nCompany : " << obj1.getCompanyName() << endl;
-    cout << "Employee Wage for a month = " << totalEmpWage << endl;
+    empWageBuilder(&obj1);
     cout << endl;
     Company obj2;
-    totalEmpWage = getMonthlyEmployeeWage(obj2);
-    cout << "\nCompany : " << obj2.getCompanyName() << endl;
-    cout << "Employee Wage for a month = " << totalEmpWage << endl;
+    empWageBuilder(&obj2);
+
+    cout << "\nCompany : " << obj1.getCompanyName();
+    cout << ", Employee Wage for a month = " << obj1.getTotalMonthlyWage() << endl;
+    cout << "\nCompany : " << obj2.getCompanyName();
+    cout << ", Employee Wage for a month = " << obj2.getTotalMonthlyWage() << endl;
 }
