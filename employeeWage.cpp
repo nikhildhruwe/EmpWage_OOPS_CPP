@@ -1,9 +1,10 @@
 #include <iostream>
 #include <ctime>
 #include <unistd.h>
+#include <vector>
 using namespace std;
 
-class Company{
+class CompanyEmpWage{
     private:
         int EMP_RATE_PER_HOUR;
         int NUM_OF_WORKING_DAYS;
@@ -11,7 +12,7 @@ class Company{
         string companyName;
         int totalMonthlyWage;
     public :
-            Company();
+            CompanyEmpWage(int, int, int, string);
         int getEmployeeType();
         int getEmployeeHours(int);
         int getTotalWorkingDays();
@@ -20,50 +21,67 @@ class Company{
         string getCompanyName();
         void setTotalMonthlyWage(int);
         int getTotalMonthlyWage();
+        void empWageBuilder(CompanyEmpWage *);
 };
 
-Company :: Company(){
-    cout << "Enter Company Name: ";
-    cin >> companyName;
-    cout << "Enter total working days per month : ";
-    cin >> NUM_OF_WORKING_DAYS;
-    cout << "Enter maximum working hours : ";
-    cin >> MAX_MONTHLY_HRS;
-    cout << "Enter employee rate per hour : ";
-    cin >> EMP_RATE_PER_HOUR;
+CompanyEmpWage :: CompanyEmpWage(int EMP_RATE_PER_HOUR, int NUM_OF_WORKING_DAYS, int MAX_MONTHLY_HRS, string companyName){
+    this->NUM_OF_WORKING_DAYS = NUM_OF_WORKING_DAYS;
+    this ->EMP_RATE_PER_HOUR = EMP_RATE_PER_HOUR;
+    this ->MAX_MONTHLY_HRS = MAX_MONTHLY_HRS;
+    this ->companyName = companyName;
 }
 
-void Company :: setTotalMonthlyWage(int totalMonthlyWage){
-    this->totalMonthlyWage = totalMonthlyWage; 
-    // cout << this->totalMonthlyWage << endl;  
+void CompanyEmpWage :: setTotalMonthlyWage(int totalMonthlyWage){
+    this->totalMonthlyWage = totalMonthlyWage;   
 }
 
-int Company :: getTotalMonthlyWage(){
-    // cout << totalMonthlyWage << endl;  
+int CompanyEmpWage :: getTotalMonthlyWage(){  
     return this->totalMonthlyWage;
 }
 
-string Company :: getCompanyName(){
+string CompanyEmpWage :: getCompanyName(){
     return companyName;
 }
 
-int Company :: getEmpRatePerHour(){
+int CompanyEmpWage :: getEmpRatePerHour(){
     return EMP_RATE_PER_HOUR;
 }
 
-int Company :: getMaxMonthlyHours(){
+int CompanyEmpWage :: getMaxMonthlyHours(){
     return MAX_MONTHLY_HRS;
 }
 
-int Company :: getTotalWorkingDays(){
+int CompanyEmpWage :: getTotalWorkingDays(){
     return NUM_OF_WORKING_DAYS;
 }
+        vector <CompanyEmpWage> companyObjectList;
 
-int Company :: getEmployeeType(){
-    return (rand() % 3);  
+class EmployeeWage{
+    public :
+        CompanyEmpWage addCompanyDetails();
+        int getEmployeeHours(int);
+        void empWageBuilder(CompanyEmpWage *);
+        int getEmployeeType(){
+             return (rand() % 3);  
+        }
+};
+
+CompanyEmpWage EmployeeWage :: addCompanyDetails(){
+        int EMP_RATE_PER_HOUR, NUM_OF_WORKING_DAYS, MAX_MONTHLY_HRS;
+        string companyName;
+        cout << "Enter Company Name: ";
+        cin >> companyName;
+        cout << "Enter total working days per month : ";
+        cin >> NUM_OF_WORKING_DAYS;
+        cout << "Enter maximum working hours : ";
+        cin >> MAX_MONTHLY_HRS;
+        cout << "Enter employee rate per hour : ";
+        cin >> EMP_RATE_PER_HOUR;
+        CompanyEmpWage companyObj(EMP_RATE_PER_HOUR, NUM_OF_WORKING_DAYS, MAX_MONTHLY_HRS, companyName);
+        return companyObj;
 }
 
-int Company :: getEmployeeHours(int empType){
+int EmployeeWage :: getEmployeeHours(int empType){
     const int FULL_TIME = 0, PART_TIME = 1;
     int empHrs;
 
@@ -80,32 +98,59 @@ int Company :: getEmployeeHours(int empType){
         return empHrs;
 }
 
-void empWageBuilder(Company *obj){
+void EmployeeWage :: empWageBuilder(CompanyEmpWage *companyObj){
     int empType, empHrs, day = 0, totalEmpHrs = 0;
-
-    while (day < obj->getTotalWorkingDays() && totalEmpHrs < obj->getMaxMonthlyHours()){
+    cout << companyObj->getTotalWorkingDays() << endl;
+    while (day < companyObj->getTotalWorkingDays() && totalEmpHrs < companyObj->getMaxMonthlyHours()){
         day++;
-        empType = obj->getEmployeeType();
-        empHrs = obj->getEmployeeHours(empType);
+        empType = getEmployeeType();
+        empHrs = getEmployeeHours(empType);
         totalEmpHrs += empHrs;
     }
-   int totalWage = totalEmpHrs * obj->getEmpRatePerHour();
-   obj->setTotalMonthlyWage(totalWage);
+   int totalWage = totalEmpHrs * companyObj->getEmpRatePerHour();
+   companyObj->setTotalMonthlyWage(totalWage);
 }
 
-int main(){
-    cout << "\n\tWelcome To Employee Wage Computation" << endl;
-    int totalEmpWage;
-    srand(time(0));
+void addCompany(EmployeeWage *empObj){
+   CompanyEmpWage companyObj =  empObj->addCompanyDetails();
+   empObj->empWageBuilder(&companyObj);
+   companyObjectList.push_back(companyObj);
+}
 
-    Company obj1;
-    empWageBuilder(&obj1);
-    cout << endl;
-    Company obj2;
-    empWageBuilder(&obj2);
+void display(){
+    for (int i = 0 ; i < companyObjectList.size();  i++){
+        cout << "Company: " << companyObjectList[i].getCompanyName() <<
+         ", Total Wage : " << companyObjectList[i].getTotalMonthlyWage() << endl;
+    }
+}
 
-    cout << "\nCompany : " << obj1.getCompanyName();
-    cout << ", Employee Wage for a month = " << obj1.getTotalMonthlyWage() << endl;
-    cout << "\nCompany : " << obj2.getCompanyName();
-    cout << ", Employee Wage for a month = " << obj2.getTotalMonthlyWage() << endl;
+void displayOptions(){
+    bool status = true;
+    EmployeeWage empObj;
+
+    while (status){
+        srand(time(0));
+        cout << "\n  Choose Operation.\n1.Add Company Details.\n2.Display.\n3.Exit" << endl;
+        int choice;
+        cin >> choice;
+        switch (choice){
+        case 1:
+            addCompany(&empObj);
+            break;
+        case 2:
+            display();
+            break;
+        case 3:
+            status = false;
+            break;
+        default:
+            cout << "Invalid Choice." << endl;
+            break;
+        }
+    }
+}
+
+int main (){
+    cout << "\n\tWelcome To Employee Wage Computation" << endl; 
+    displayOptions();
 }
