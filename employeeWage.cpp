@@ -56,17 +56,17 @@ int CompanyEmpWage :: getTotalWorkingDays(){
 }
         vector <CompanyEmpWage> companyObjectList;
 
-class EmployeeWage{
+class EmployeeWageBuilder{
     public :
         CompanyEmpWage addCompanyDetails();
         int getEmployeeHours(int);
-        void empWageBuilder(CompanyEmpWage *);
+        void empWageComputation(CompanyEmpWage *);
         int getEmployeeType(){
              return (rand() % 3);  
         }
 };
 
-CompanyEmpWage EmployeeWage :: addCompanyDetails(){
+CompanyEmpWage EmployeeWageBuilder :: addCompanyDetails(){
         int EMP_RATE_PER_HOUR, NUM_OF_WORKING_DAYS, MAX_MONTHLY_HRS;
         string companyName;
         cout << "Enter Company Name: ";
@@ -81,7 +81,7 @@ CompanyEmpWage EmployeeWage :: addCompanyDetails(){
         return companyObj;
 }
 
-int EmployeeWage :: getEmployeeHours(int empType){
+int EmployeeWageBuilder :: getEmployeeHours(int empType){
     const int FULL_TIME = 0, PART_TIME = 1;
     int empHrs;
 
@@ -98,9 +98,9 @@ int EmployeeWage :: getEmployeeHours(int empType){
         return empHrs;
 }
 
-void EmployeeWage :: empWageBuilder(CompanyEmpWage *companyObj){
+void EmployeeWageBuilder :: empWageComputation(CompanyEmpWage *companyObj){
     int empType, empHrs, day = 0, totalEmpHrs = 0;
-    cout << companyObj->getTotalWorkingDays() << endl;
+    
     while (day < companyObj->getTotalWorkingDays() && totalEmpHrs < companyObj->getMaxMonthlyHours()){
         day++;
         empType = getEmployeeType();
@@ -111,9 +111,9 @@ void EmployeeWage :: empWageBuilder(CompanyEmpWage *companyObj){
    companyObj->setTotalMonthlyWage(totalWage);
 }
 
-void addCompany(EmployeeWage *empObj){
+void addCompany(EmployeeWageBuilder *empObj){
    CompanyEmpWage companyObj =  empObj->addCompanyDetails();
-   empObj->empWageBuilder(&companyObj);
+   empObj->empWageComputation(&companyObj);
    companyObjectList.push_back(companyObj);
 }
 
@@ -126,7 +126,7 @@ void display(){
 
 void displayOptions(){
     bool status = true;
-    EmployeeWage empObj;
+    EmployeeWageBuilder empObj;
 
     while (status){
         srand(time(0));
