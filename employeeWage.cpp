@@ -54,9 +54,16 @@ int CompanyEmpWage :: getMaxMonthlyHours(){
 int CompanyEmpWage :: getTotalWorkingDays(){
     return NUM_OF_WORKING_DAYS;
 }
-        vector <CompanyEmpWage> companyObjectList;
 
-class EmployeeWageBuilder{
+class EmployeeWageComputation
+{
+    public:
+        virtual void empWageComputation(CompanyEmpWage *) = 0;
+};
+
+vector <CompanyEmpWage> companyObjectList;
+
+class EmployeeWageBuilder : public EmployeeWageComputation{
     public :
         CompanyEmpWage addCompanyDetails();
         int getEmployeeHours(int);
