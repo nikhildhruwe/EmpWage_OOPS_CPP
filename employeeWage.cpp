@@ -2,6 +2,7 @@
 #include <ctime>
 #include <unistd.h>
 #include <vector>
+#include <list>
 using namespace std;
 
 class CompanyEmpWage{
@@ -54,7 +55,8 @@ int CompanyEmpWage :: getMaxMonthlyHours(){
 int CompanyEmpWage :: getTotalWorkingDays(){
     return NUM_OF_WORKING_DAYS;
 }
-        vector <CompanyEmpWage> companyObjectList;
+        
+list<CompanyEmpWage> companyObjectList;
 
 class EmployeeWageBuilder{
     public :
@@ -118,9 +120,10 @@ void addCompany(EmployeeWageBuilder *empObj){
 }
 
 void display(){
-    for (int i = 0 ; i < companyObjectList.size();  i++){
-        cout << "Company: " << companyObjectList[i].getCompanyName() <<
-         ", Total Wage : " << companyObjectList[i].getTotalMonthlyWage() << endl;
+    list<CompanyEmpWage> :: iterator companyObj;
+     for (companyObj = companyObjectList.begin() ; companyObj != companyObjectList.end() ;  companyObj++){
+        cout << "Company: " << companyObj->getCompanyName() <<
+         ", Total Wage : " << companyObj->getTotalMonthlyWage() << endl;
     }
 }
 
