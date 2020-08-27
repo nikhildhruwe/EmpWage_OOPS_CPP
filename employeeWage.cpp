@@ -12,8 +12,10 @@ class CompanyEmpWage{
         int MAX_MONTHLY_HRS;
         string companyName;
         int totalMonthlyWage;
+        
     public :
-            CompanyEmpWage(int, int, int, string);
+        vector<int> dailyWageList;
+        CompanyEmpWage(int, int, int, string);
         int getEmployeeType();
         int getEmployeeHours(int);
         int getTotalWorkingDays();
@@ -108,6 +110,8 @@ void EmployeeWageBuilder :: empWageComputation(CompanyEmpWage *companyObj){
         empType = getEmployeeType();
         empHrs = getEmployeeHours(empType);
         totalEmpHrs += empHrs;
+        int dailyWage = empHrs * companyObj->getEmpRatePerHour();
+        companyObj->dailyWageList.push_back(dailyWage);
     }
    int totalWage = totalEmpHrs * companyObj->getEmpRatePerHour();
    companyObj->setTotalMonthlyWage(totalWage);
@@ -122,8 +126,13 @@ void addCompany(EmployeeWageBuilder *empObj){
 void display(){
     list<CompanyEmpWage> :: iterator companyObj;
      for (companyObj = companyObjectList.begin() ; companyObj != companyObjectList.end() ;  companyObj++){
-        cout << "Company: " << companyObj->getCompanyName() <<
-         ", Total Wage : " << companyObj->getTotalMonthlyWage() << endl;
+        cout << "Company: " << companyObj->getCompanyName() << endl;
+        cout << "Daily Wage :" << endl;
+        for (int i = 0; i < companyObj->dailyWageList.size(); i++){
+            cout << "Day-" << i + 1 << " : " << companyObj->dailyWageList[i] << endl;
+        }
+        cout << "---------------------" << endl;
+        cout << "Total Wage : " << companyObj->getTotalMonthlyWage() << endl;
     }
 }
 
