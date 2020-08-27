@@ -125,15 +125,25 @@ void addCompany(EmployeeWageBuilder *empObj){
 
 void display(){
     list<CompanyEmpWage> :: iterator companyObj;
+    string companyName;
+    int flag = 0;
+    cout << "Enter company name : " << endl;
+    cin >> companyName;
      for (companyObj = companyObjectList.begin() ; companyObj != companyObjectList.end() ;  companyObj++){
-        cout << "Company: " << companyObj->getCompanyName() << endl;
-        cout << "Daily Wage :" << endl;
-        for (int i = 0; i < companyObj->dailyWageList.size(); i++){
-            cout << "Day-" << i + 1 << " : " << companyObj->dailyWageList[i] << endl;
+        if ( companyObj->getCompanyName() == companyName  ){ 
+            cout << "Company: " << companyObj->getCompanyName() << endl;
+            cout << "Daily Wage :" << endl;
+            for (int i = 0; i < companyObj->dailyWageList.size(); i++){
+                cout << "Day-" << i + 1 << " : " << companyObj->dailyWageList[i] << endl;
+            }
+            cout << "---------------------" << endl;
+            cout << "Total Wage : " << companyObj->getTotalMonthlyWage() << endl;
+            flag = 1;
         }
-        cout << "---------------------" << endl;
-        cout << "Total Wage : " << companyObj->getTotalMonthlyWage() << endl;
     }
+
+    if (flag != 1)
+        cout << "No Such Company Found" << endl; 
     cout << endl;
 }
 
@@ -143,7 +153,7 @@ void displayOptions(){
 
     while (status){
         srand(time(0));
-        cout << "\n  Choose Operation.\n1.Add Company Details.\n2.Display.\n3.Exit" << endl;
+        cout << "\n  Choose Operation.\n1.Add Company Details.\n2.Display Total Wage of a Company.\n3.Exit" << endl;
         int choice;
         cin >> choice;
         switch (choice){
