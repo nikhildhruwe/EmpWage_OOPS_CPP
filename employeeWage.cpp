@@ -12,7 +12,7 @@ class CompanyEmpWage{
         int MAX_MONTHLY_HRS;
         string companyName;
         int totalMonthlyWage;
-        
+
     public :
         vector<int> dailyWageList;
         CompanyEmpWage(int, int, int, string);
@@ -35,10 +35,10 @@ CompanyEmpWage :: CompanyEmpWage(int EMP_RATE_PER_HOUR, int NUM_OF_WORKING_DAYS,
 }
 
 void CompanyEmpWage :: setTotalMonthlyWage(int totalMonthlyWage){
-    this->totalMonthlyWage = totalMonthlyWage;   
+    this->totalMonthlyWage = totalMonthlyWage;
 }
 
-int CompanyEmpWage :: getTotalMonthlyWage(){  
+int CompanyEmpWage :: getTotalMonthlyWage(){
     return this->totalMonthlyWage;
 }
 
@@ -57,7 +57,7 @@ int CompanyEmpWage :: getMaxMonthlyHours(){
 int CompanyEmpWage :: getTotalWorkingDays(){
     return NUM_OF_WORKING_DAYS;
 }
-        
+
 list<CompanyEmpWage> companyObjectList;
 
 class EmployeeWageBuilder{
@@ -66,7 +66,7 @@ class EmployeeWageBuilder{
         int getEmployeeHours(int);
         void empWageComputation(CompanyEmpWage *);
         int getEmployeeType(){
-             return (rand() % 3);  
+             return (rand() % 3);
         }
 };
 
@@ -104,7 +104,7 @@ int EmployeeWageBuilder :: getEmployeeHours(int empType){
 
 void EmployeeWageBuilder :: empWageComputation(CompanyEmpWage *companyObj){
     int empType, empHrs, day = 0, totalEmpHrs = 0;
-    
+
     while (day < companyObj->getTotalWorkingDays() && totalEmpHrs < companyObj->getMaxMonthlyHours()){
         day++;
         empType = getEmployeeType();
@@ -123,14 +123,23 @@ void addCompany(EmployeeWageBuilder *empObj){
    companyObjectList.push_back(companyObj);
 }
 
-void display(){
+void displayMonthlyWages(){
+    list<CompanyEmpWage> :: iterator companyObj;
+     for (companyObj = companyObjectList.begin() ; companyObj != companyObjectList.end() ;  companyObj++){
+            cout << "Company: " << companyObj->getCompanyName();
+            cout << ", Total Wage : " << companyObj->getTotalMonthlyWage() << endl;
+    }
+    cout << endl;
+}
+
+void displayDailyWage(){
     list<CompanyEmpWage> :: iterator companyObj;
     string companyName;
     int flag = 0;
     cout << "Enter company name : " << endl;
     cin >> companyName;
      for (companyObj = companyObjectList.begin() ; companyObj != companyObjectList.end() ;  companyObj++){
-        if ( companyObj->getCompanyName() == companyName  ){ 
+        if ( companyObj->getCompanyName() == companyName  ){
             cout << "Company: " << companyObj->getCompanyName() << endl;
             cout << "Daily Wage :" << endl;
             for (int i = 0; i < companyObj->dailyWageList.size(); i++){
@@ -143,7 +152,7 @@ void display(){
     }
 
     if (flag != 1)
-        cout << "No Such Company Found" << endl; 
+        cout << "No Such Company Found" << endl;
     cout << endl;
 }
 
@@ -153,7 +162,8 @@ void displayOptions(){
 
     while (status){
         srand(time(0));
-        cout << "\n  Choose Operation.\n1.Add Company Details.\n2.Display Total Wage of a Company.\n3.Exit" << endl;
+        cout << "\n  Choose Operation.\n1.Add Company Details.\n2.Display Total Wage of all Companies.\n3.Display Daily Wage of "
+        "a company.\n4.Exit" << endl;
         int choice;
         cin >> choice;
         switch (choice){
@@ -162,9 +172,13 @@ void displayOptions(){
             break;
         case 2:
             cout << endl;
-            display();
+            displayMonthlyWages();
             break;
         case 3:
+            cout << endl;
+            displayDailyWage();
+            break;
+        case 4:
             status = false;
             break;
         default:
@@ -175,6 +189,6 @@ void displayOptions(){
 }
 
 int main (){
-    cout << "\n\tWelcome To Employee Wage Computation" << endl; 
+    cout << "\n\tWelcome To Employee Wage Computation" << endl;
     displayOptions();
 }
