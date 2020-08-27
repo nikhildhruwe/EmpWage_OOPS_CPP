@@ -134,6 +134,7 @@ void display(){
         cout << "---------------------" << endl;
         cout << "Total Wage : " << companyObj->getTotalMonthlyWage() << endl;
     }
+    cout << endl;
 }
 
 void displayOptions(){
@@ -150,6 +151,7 @@ void displayOptions(){
             addCompany(&empObj);
             break;
         case 2:
+            cout << endl;
             display();
             break;
         case 3:
